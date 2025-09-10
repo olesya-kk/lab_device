@@ -10,7 +10,7 @@
 #include <memory>
 #include <cmath>
 
-using namespace std;
+using namespace std; //
 
 int streamcounter; ///< Global variable to keep track of stream creation.
 
