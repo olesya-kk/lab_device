@@ -2,38 +2,46 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "**" ]
+    branches: ["**"]
   pull_request:
-    branches: [ "**" ]
+    branches: ["**"]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Клонируем репозиторий
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # 2. Устанавливаем зависимости
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake lcov
+        sudo apt-get install -y build-essential cmake lcov g++
 
-    - name: Configure CMake
-      run: cmake -S . -B build
+    # 3. Настройка CMake
+    - name: Configure
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 
-    - name: Build project
-      run: cmake --build build --config Release -- -j
+    # 4. Сборка проекта
+    - name: Build
+      run: cmake --build build --config Debug -- -j
 
+    # 5. Запуск тестов
     - name: Run tests
       run: ctest --test-dir build --output-on-failure
 
+    # 6. Генерация покрытия
     - name: Generate coverage report
       run: |
-        lcov --capture --directory build --output-file coverage.info
+        rm -f build/**/*.gcda build/**/*.gcno coverage.info || true
+        lcov --capture --directory build/ --output-file coverage.info --ignore-errors mismatch
         lcov --remove coverage.info '/usr/*' --output-file coverage.info
         lcov --list coverage.info
 
+    # 7. Загрузка покрытия на Codecov
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
       with:
