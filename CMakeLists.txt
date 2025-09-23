@@ -59,3 +59,10 @@ target_link_libraries(tests PRIVATE reactor gtest_main)
 # Регистрируем тест для CTest
 # ----------------------------
 add_test(NAME AllTests COMMAND tests)  # Все тесты запускаются через исполняемый файл "tests"
+
+
+# Добавляем флаги для gcc/g++
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g --coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
