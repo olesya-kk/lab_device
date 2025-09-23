@@ -2,29 +2,35 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ complex-reactor ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ complex-reactor ]
+    branches: [ "**" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y lcov g++ make
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake lcov
 
-    - name: Build
-      run: g++ -fprofile-arcs -ftest-coverage -std=c++17 src/*.cpp tests/*.cpp -lgtest -lgtest_main -pthread -o test_runner
+    - name: Configure CMake
+      run: cmake -S . -B build
+
+    - name: Build project
+      run: cmake --build build --config Release -- -j
 
     - name: Run tests
-      run: ./test_runner
+      run: ctest --test-dir build --output-on-failure
 
     - name: Generate coverage report
       run: |
-        lcov --capture --directory . --output-file coverage.info
+        lcov --capture --directory build --output-file coverage.info
         lcov --remove coverage.info '/usr/*' --output-file coverage.info
         lcov --list coverage.info
 
