@@ -1,32 +1,34 @@
-name: C++ CI
+name: C/C++ CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build-test:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake g++ lcov
+    - uses: actions/checkout@v3
 
-      - name: Configure project
-        run: cmake -B build
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y lcov g++ make
 
-      - name: Build
-        run: cmake --build build -- -j
+    - name: Build
+      run: g++ -fprofile-arcs -ftest-coverage -std=c++17 src/*.cpp tests/*.cpp -lgtest -lgtest_main -pthread -o test_runner
 
-      - name: Run tests
-        run: ctest --output-on-failure -C Debug -T test --test-dir build
+    - name: Run tests
+      run: ./test_runner
 
-      - name: Capture coverage
-        run: |
-          lcov --capture --directory build --output-file coverage.info
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info
-          lcov --list coverage.info
+    - name: Generate coverage report
+      run: |
+        lcov --capture --directory . --output-file coverage.info
+        lcov --remove coverage.info '/usr/*' --output-file coverage.info
+        lcov --list coverage.info
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          files: coverage.info
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
