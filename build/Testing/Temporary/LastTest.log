@@ -1,0 +1,37 @@
+Start testing: Sep 23 23:26 RTZ 2 (çèìà)
+----------------------------------------------------------
+1/1 Testing: AllTests
+1/1 Test: AllTests
+Command: "C:/Users/Admin/MyGit/lab_device/build/Release/tests.exe"
+Directory: C:/Users/Admin/MyGit/lab_device/build
+"AllTests" start time: Sep 23 23:26 RTZ 2 (çèìà)
+Output:
+----------------------------------------------------------
+Running main() from C:\Users\Admin\MyGit\lab_device\build\_deps\googletest-src\googletest\src\gtest_main.cc
+[==========] Running 5 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 5 tests from ComplexReactorTests
+[ RUN      ] ComplexReactorTests.SingleOutputBasic
+[       OK ] ComplexReactorTests.SingleOutputBasic (0 ms)
+[ RUN      ] ComplexReactorTests.TwoOutputsSplit
+[       OK ] ComplexReactorTests.TwoOutputsSplit (0 ms)
+[ RUN      ] ComplexReactorTests.LimitingReagent
+[       OK ] ComplexReactorTests.LimitingReagent (0 ms)
+[ RUN      ] ComplexReactorTests.InvalidConversionThrows
+[       OK ] ComplexReactorTests.InvalidConversionThrows (0 ms)
+[ RUN      ] ComplexReactorTests.MultipleRunsAndReset
+[       OK ] ComplexReactorTests.MultipleRunsAndReset (0 ms)
+[----------] 5 tests from ComplexReactorTests (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 5 tests.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"AllTests" end time: Sep 23 23:26 RTZ 2 (çèìà)
+"AllTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 23 23:26 RTZ 2 (çèìà)
